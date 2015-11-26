@@ -6,6 +6,8 @@
 
 # Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 
+require "pry-byebug"
+
 class NonAmbundantSum
 
   def initialize
@@ -13,12 +15,28 @@ class NonAmbundantSum
   end
 
   def sum_total
-    
+    sum_of_all - abundant_nums_sum
+  end
+
+  def sum_of_all
+    (1..@ceiling).to_a.inject(:+)
+  end
+
+  def abundant_nums_sum
+    binding.pry
+    abundant_nums.inject(:+)
+  end
+
+  def abundant_nums
+    (1..@ceiling).select {|n| divisor_sum(n) && n < divisor_sum(n)}
+  end
+
+  def divisor_sum(n)
+    (1..(n / 2)).select {|x| n % x == 0}.inject(:+)
   end
 
 end
 
 
 puts "yo, crunching numbers here"
-sleep(5)
 puts NonAmbundantSum.new.sum_total
