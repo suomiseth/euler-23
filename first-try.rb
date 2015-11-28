@@ -32,18 +32,12 @@ class NonAmbundantSum
   end
 
   def non_abundant_nums
-    answer = []
-    (1..@ceiling).each do |n|
+    (1..@ceiling).select do |n|
       less = @abundant_nums.select {|x| x < n}
-      temp = less.select do |num|
+      less.select do |num|
         less.include?(n - num)
-      end
-      if temp.empty?
-        puts n
-        answer << n 
-      end
+      end.empty?
     end
-    answer
   end
 end
 
