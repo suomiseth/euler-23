@@ -12,29 +12,39 @@ class NonAmbundantSum
 
   def initialize
     @ceiling = 28123
+    @abundant_nums = abundant_nums
   end
-
-  def sum_total
-    sum_of_all - abundant_nums_sum
-  end
-
-  def sum_of_all
-    (1..@ceiling).to_a.inject(:+)
-  end
-
-  def abundant_nums_sum
-    binding.pry
-    abundant_nums.inject(:+)
-  end
-
+  
   def abundant_nums
     (1..@ceiling).select {|n| divisor_sum(n) && n < divisor_sum(n)}
   end
-
+  
   def divisor_sum(n)
-    (1..(n / 2)).select {|x| n % x == 0}.inject(:+)
+    divisors(n).inject(:+)
   end
 
+  def divisors(n)
+    (1..(n / 2)).select {|x| n % x == 0}
+  end
+
+  def sum_total
+    non_abundant_nums.inject(:+)
+  end
+
+  def non_abundant_nums
+    answer = []
+    (1..@ceiling).each do |n|
+      less = @abundant_nums.select {|x| x < n}
+      temp = less.select do |num|
+        less.include?(n - num)
+      end
+      if temp.empty?
+        puts n
+        answer << n 
+      end
+    end
+    answer
+  end
 end
 
 
